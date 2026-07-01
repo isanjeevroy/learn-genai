@@ -1,20 +1,19 @@
 import os
 from dotenv import load_dotenv
+from pathlib import Path
 from openai import OpenAI
 import requests
 import json
 from pydantic import BaseModel, Field
 from typing import Optional
 
-load_dotenv()
+load_dotenv(Path(__file__).parent.parent / ".env")
 
+client = OpenAI()
 
-api_key = os.getenv("GEMINI_API_KEY")
-
-client = OpenAI(
-    api_key=api_key,
-    base_url="https://generativelanguage.googleapis.com/v1beta/openai"
-)
+def run_command(cmd: str):
+    result = os.system(cmd)
+    return result
 
 def get_weather(city: str):
     url = f"https://wttr.in/{city.lower()}?format=%C+%t"
@@ -27,7 +26,8 @@ def get_weather(city: str):
     return "Something went wrong"
 
 available_tools = {
-    "get_weather": get_weather
+    "get_weather": get_weather,
+     "run_command": run_command,
 }
 
 SYSTEM_PROMPT = """
@@ -48,6 +48,7 @@ SYSTEM_PROMPT = """
 
     Available Tools:
     - get_weather(city: str): Takes city name as an input string and return the weather info about the city.
+    - run_command(cmd: str): Takes a system linux command as string and excuted the command and users system and returns the output from that command
 
     Example 1:
     START: Hey, can you solve 2 + 3 * 5 /10
