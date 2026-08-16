@@ -4,7 +4,6 @@ load_dotenv()
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_core.documents import Document
 from langchain_community.vectorstores import FAISS
-from langchain_community.retrievers import WikipediaRetriever
 from langchain_community.vectorstores import Chroma
 from langchain_classic.retrievers import ContextualCompressionRetriever
 from langchain_classic.retrievers.multi_query import MultiQueryRetriever
